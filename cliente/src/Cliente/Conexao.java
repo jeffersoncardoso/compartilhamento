@@ -1,7 +1,8 @@
 package Cliente;
 
 import Util.Saida;
-import Mensagem.Mensagem;
+import Requisicao.Requisicao;
+import Resposta.Resposta;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,11 +15,11 @@ public class Conexao extends Thread{
 
     public Conexao(Socket socket) throws IOException {
         this.socket = socket;
-        receber = new ObjectInputStream(socket.getInputStream());
         enviar = new ObjectOutputStream(socket.getOutputStream());
+        receber = new ObjectInputStream(socket.getInputStream());
     }
     
-    public void enviar(Mensagem mensagem) {
+    public void enviar(Requisicao mensagem) {
         try {
             this.enviar.writeObject(mensagem);
             this.enviar.flush();
@@ -27,9 +28,9 @@ public class Conexao extends Thread{
         }
     }
     
-    public Mensagem receber() throws IOException{
+    public Resposta receber() throws IOException{
         try {
-            Mensagem object = (Mensagem)this.receber.readObject();
+            Resposta object = (Resposta)this.receber.readObject();
             return object;
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException("Erro na mensagem");

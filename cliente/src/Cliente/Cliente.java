@@ -5,6 +5,14 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 
 
 public class Cliente extends javax.swing.JFrame {
@@ -33,8 +41,7 @@ public class Cliente extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtSaida = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listaArquivos = new javax.swing.JList<>();
-        btnExcluir = new javax.swing.JButton();
+        listaArquivos = new javax.swing.JList<String>();
         btnDownload = new javax.swing.JButton();
         txtPorta = new javax.swing.JTextField();
 
@@ -63,9 +70,12 @@ public class Cliente extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(listaArquivos);
 
-        btnExcluir.setText("Excluir");
-
         btnDownload.setText("Download");
+        btnDownload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownloadActionPerformed(evt);
+            }
+        });
 
         txtPorta.setText("8080");
 
@@ -77,18 +87,13 @@ public class Cliente extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(230, 230, 230)
-                                .addComponent(btnEnviarArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(3, 3, 3))
+                        .addGap(230, 230, 230)
+                        .addComponent(btnEnviarArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -113,11 +118,8 @@ public class Cliente extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDownload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEnviarArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(17, Short.MAX_VALUE))
@@ -133,17 +135,47 @@ public class Cliente extends javax.swing.JFrame {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File arquivo = jfc.getSelectedFile();
             
+            try {
+                disco.enviarArquivo(arquivo);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }
         
     }//GEN-LAST:event_btnEnviarArquivoActionPerformed
 
+    
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
         try {
-            Disco disco = new Disco(this.txtHost.getText(), Integer.parseInt(this.txtPorta.getText()));
+            disco = new Disco("localhost", Integer.parseInt(this.txtPorta.getText()));
+            
+            btnConectar.setText("Conectado");
+            btnConectar.setEnabled(false);
+            
+            Timer timer = new Timer(); 
+            timer.schedule( new TimerTask() 
+            { 
+                public void run() {
+                    int index = listaArquivos.getSelectedIndex();
+                    listaArquivos.setListData(disco.getArquivos());
+                    listaArquivos.setSelectedIndex(index);
+                } 
+            }, 0, 3000);
         } catch (IOException ex) {
             Saida.escrever(ex.getMessage());
         }
     }//GEN-LAST:event_btnConectarActionPerformed
+
+    private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
+        if(listaArquivos.isSelectionEmpty())
+            return;
+        
+        try {
+            disco.fazerDownload(listaArquivos.getSelectedValue());
+        } catch (IOException ex) {
+            Saida.escrever(ex.getMessage());
+        }
+    }//GEN-LAST:event_btnDownloadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,7 +216,6 @@ public class Cliente extends javax.swing.JFrame {
     private javax.swing.JButton btnConectar;
     private javax.swing.JButton btnDownload;
     private javax.swing.JButton btnEnviarArquivo;
-    private javax.swing.JButton btnExcluir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> listaArquivos;
