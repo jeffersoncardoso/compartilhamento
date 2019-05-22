@@ -1,0 +1,24 @@
+Projeto Saúde
+	- Emagrecer
+	- Tratar Espinhas
+	- Fazer exames regularmente
+	- Ir ao dentista uma vez ao ano
+
+Projeto Carro
+	- Passar na Prova para CNH
+	- Comprar carro
+	- Aperfeiçoar direção
+
+Projeto Trabalho
+	- Criar gerador de CRUD
+	- Melhorar capacidade de liderança
+	- Ir a eventos
+
+Projeto Freelancer
+	- Criar portifolio (site)
+	- Melhorar Github
+	- Contribuir em projetos opensource
+
+
+Projeto Acadêmico
+	- Voluntário de iniciação cientifica

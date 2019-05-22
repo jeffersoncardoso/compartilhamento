@@ -16,6 +16,8 @@ public class AguardarConexoes extends Thread{
         while(this.servidor.estaLigado()){
             try {
                 Socket socket = this.servidor.esperarCliente();
+                
+                Saida.escrever(String.valueOf(socket.getLocalPort()));
 
                 Usuario novoUsuario = new Usuario(new Conexao(socket), this.servidor);
                 servidor.adicionar(novoUsuario);

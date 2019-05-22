@@ -46,7 +46,7 @@ public class Disco {
                 break;
         }
         
-        
+        listarArquivos();
     }
     
     public void fazerDownload(String chave) throws IOException {

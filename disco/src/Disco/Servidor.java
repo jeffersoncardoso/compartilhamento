@@ -11,13 +11,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.*;
 
-public class Servidor {    
+public class Servidor {
+    public String nome;
     ServerSocket socketServidor;
-    Socket s;
     public ArrayList<Usuario> usuarios = new ArrayList();
     
-    public Servidor(int porta) {
+    public Servidor(String nome, int porta) {
         try {
+            this.nome = nome;
             this.socketServidor = new ServerSocket(porta);
             Saida.escrever("Servidor iniciado na porta %s", porta);
         } catch (IOException ex) {
