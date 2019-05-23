@@ -1,5 +1,8 @@
 package Disco; 
 
+import Catalogo.ServidorCadeia;
+import Comunicacao.Mensagem;
+import Conexao.ConexaoServidor;
 import Estrutura.Arquivo;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,6 +18,9 @@ public class Servidor {
     public String nome;
     ServerSocket socketServidor;
     public ArrayList<Usuario> usuarios = new ArrayList();
+    
+    private ServidorCadeia anterior;
+    private ServidorCadeia proximo;
     
     public Servidor(String nome, int porta) {
         try {
@@ -34,6 +40,7 @@ public class Servidor {
     public void iniciarBarramentos() {
         try {
             new AguardarConexoes(this).start();
+            new VerificarCadeia(this).start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,5 +84,17 @@ public class Servidor {
         }
   
         return Arrays.copyOf(nomesArquivo.toArray(), nomesArquivo.size(), String[].class);
+    }
+
+    public void conectarServidorAnterior(ServidorCadeia servidor) {
+        anterior = servidor;
+    }
+    
+    public void conectarProximoServidor(ServidorCadeia conexao) {
+        proximo = conexao;
+    }
+    
+    public boolean possuiCadeia() {
+        return anterior instanceof ServidorCadeia && proximo instanceof ServidorCadeia;
     }
 }

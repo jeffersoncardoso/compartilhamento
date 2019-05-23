@@ -1,14 +1,16 @@
 package Catalogo;
 
+import Conexao.ConexaoServidor;
 import Disco.Servidor;
 import Exceptions.ServidorJaConectadoException;
 import Exceptions.ServidorNaoEncontradoException;
 import java.io.IOException;
+import java.net.Socket;
 
 public class Gerenciador {
     private Servidor servidor;
-    private ServidorAnterior anterior;
-    private ServidorProximo proximo;
+    private ServidorCadeia anterior;
+    private ServidorCadeia proximo;
 
     public Gerenciador() {
     }
@@ -21,10 +23,9 @@ public class Gerenciador {
     
     public boolean conectar(String endereco) throws ServidorJaConectadoException, ServidorNaoEncontradoException {
         try {
-            if(proximo instanceof ServidorProximo)
-                throw new ServidorJaConectadoException(String.format("Servidor já está conectado"));
+            Socket socket = new Socket("localhost", Integer.parseInt(endereco));
             
-            proximo = new ServidorProximo(Integer.parseInt(endereco));
+            servidor.conectarProximoServidor(new ServidorCadeia(new ConexaoServidor(socket)));
             
             return true;
         } catch (IOException ex) {

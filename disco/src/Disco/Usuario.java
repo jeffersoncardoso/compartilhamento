@@ -1,5 +1,6 @@
 package Disco;
 
+import Conexao.ConexaoCliente;
 import Estrutura.Arquivo;
 import Requisicao.Requisicao;
 import Requisicao.EnviarArquivo;
@@ -15,10 +16,10 @@ import java.io.IOException;
 
 public class Usuario extends Thread{
     private boolean conectado = true;
-    private final Conexao conexao;
+    private final ConexaoCliente conexao;
     private final Servidor servidor;
 
-    public Usuario(Conexao conexao, Servidor servidor) {
+    public Usuario(ConexaoCliente conexao, Servidor servidor) {
         this.conexao = conexao;
         this.servidor = servidor;
         

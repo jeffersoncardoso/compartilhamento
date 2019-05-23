@@ -3,6 +3,7 @@ package Cliente;
 import Util.Saida;
 import Requisicao.Requisicao;
 import Resposta.Resposta;
+import Conexao.ConectarCliente;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +18,9 @@ public class Conexao extends Thread{
         this.socket = socket;
         enviar = new ObjectOutputStream(socket.getOutputStream());
         receber = new ObjectInputStream(socket.getInputStream());
+        
+//        enviar.writeObject(new ConectarCliente());
+//        enviar.flush();
     }
     
     public void enviar(Requisicao mensagem) {

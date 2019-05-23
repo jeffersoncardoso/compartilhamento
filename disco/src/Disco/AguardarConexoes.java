@@ -1,7 +1,13 @@
 package Disco;
 
+import Conexao.ConexaoCliente;
+import Conexao.ConexaoServidor;
+import Conexao.ConexaoFabrica;
 import java.io.IOException;
 import java.net.Socket;
+import Requisicao.Requisicao;
+import Requisicao.TipoRequisicao;
+import Conexao.Conexao;
 
 public class AguardarConexoes extends Thread{
     
@@ -13,16 +19,13 @@ public class AguardarConexoes extends Thread{
     
     @Override
     public void run() {
-        while(this.servidor.estaLigado()){
+        while(servidor.estaLigado()){
             try {
                 Socket socket = this.servidor.esperarCliente();
                 
-                Saida.escrever(String.valueOf(socket.getLocalPort()));
-
-                Usuario novoUsuario = new Usuario(new Conexao(socket), this.servidor);
-                servidor.adicionar(novoUsuario);
+                ConexaoFabrica fabrica = new ConexaoFabrica(servidor, socket);
+                fabrica.start();
                 
-                novoUsuario.start();
             } catch (IOException ex) {
                 ex.getStackTrace();
                 Saida.escrever("Erro na conexão: " + ex.getMessage());
