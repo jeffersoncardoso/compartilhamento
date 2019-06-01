@@ -1,15 +1,17 @@
 package Conexao;
 
-import Disco.Saida;
+import GUI.Saida;
 import Requisicao.Requisicao;
 import Resposta.Resposta;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ConexaoCliente extends Conexao{
-    
-    public ConexaoCliente(Socket socket) throws IOException {
-        super(socket);
+
+    public ConexaoCliente(Socket socket, ObjectOutputStream enviar, ObjectInputStream receber) throws IOException {
+        super(socket, enviar, receber);
     }
     
     public void enviar(Resposta object) {

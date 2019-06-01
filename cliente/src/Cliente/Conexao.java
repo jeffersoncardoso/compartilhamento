@@ -1,9 +1,10 @@
 package Cliente;
 
 import Util.Saida;
+import Conexao.QualTipoConexao;
+import Conexao.ConectarCliente;
 import Requisicao.Requisicao;
 import Resposta.Resposta;
-import Conexao.ConectarCliente;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,8 +20,17 @@ public class Conexao extends Thread{
         enviar = new ObjectOutputStream(socket.getOutputStream());
         receber = new ObjectInputStream(socket.getInputStream());
         
-//        enviar.writeObject(new ConectarCliente());
-//        enviar.flush();
+        conectar();
+    }
+    
+    private void conectar() throws IOException {
+        try {
+            QualTipoConexao pergunta = (QualTipoConexao)receber.readObject();
+            enviar.writeObject(new ConectarCliente());
+            enviar.flush();
+        } catch (ClassNotFoundException ex) {
+            Saida.escrever("Erro na conexão com o servidor");
+        }
     }
     
     public void enviar(Requisicao mensagem) {

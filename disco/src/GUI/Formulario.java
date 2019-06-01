@@ -1,16 +1,10 @@
 package GUI;
 
-import Catalogo.Gerenciador;
-import Disco.Saida;
-import Disco.Servidor;
-import Exceptions.ServidorJaConectadoException;
-import Exceptions.ServidorNaoEncontradoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import Servidor.Servidor;
+import java.io.IOException;
 
 public class Formulario extends javax.swing.JFrame {
     
-    private Gerenciador gerenciador = new Gerenciador();
     private Servidor servidor;
     
     /**
@@ -19,7 +13,8 @@ public class Formulario extends javax.swing.JFrame {
     public Formulario() {
         initComponents();
         
-        Saida.setSaida(txtSaida);
+        SaidaCliente.setSaida(txtSaidaCliente, jScrollPane1);
+        Saida.setSaida(txtSaidaServidor);
     }
 
     /**
@@ -34,11 +29,15 @@ public class Formulario extends javax.swing.JFrame {
         btnIniciar = new javax.swing.JButton();
         txtPorta = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtSaida = new javax.swing.JTextArea();
-        selectNome = new javax.swing.JComboBox<>();
+        txtSaidaCliente = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         txtEnderecoProximo = new javax.swing.JTextField();
         btnProximo = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtSaidaServidor = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnLimpar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,17 +50,11 @@ public class Formulario extends javax.swing.JFrame {
 
         txtPorta.setText("8080");
 
-        txtSaida.setColumns(20);
-        txtSaida.setRows(5);
-        txtSaida.setEnabled(false);
-        jScrollPane1.setViewportView(txtSaida);
-
-        selectNome.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C", "D" }));
-        selectNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectNomeActionPerformed(evt);
-            }
-        });
+        txtSaidaCliente.setColumns(20);
+        txtSaidaCliente.setRows(5);
+        txtSaidaCliente.setEnabled(false);
+        txtSaidaCliente.setMinimumSize(null);
+        jScrollPane1.setViewportView(txtSaidaCliente);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -82,8 +75,8 @@ public class Formulario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(txtEnderecoProximo, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnProximo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btnProximo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,22 +88,50 @@ public class Formulario extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        txtSaidaServidor.setColumns(20);
+        txtSaidaServidor.setRows(5);
+        txtSaidaServidor.setEnabled(false);
+        jScrollPane3.setViewportView(txtSaidaServidor);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Log do cliente");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Log do servidor");
+
+        btnLimpar.setText("Limpar");
+        btnLimpar.setToolTipText("");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(182, 182, 182)
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectNome, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 2, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLimpar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -119,12 +140,19 @@ public class Formulario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtPorta)
-                    .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                    .addComponent(selectNome))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -132,36 +160,63 @@ public class Formulario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        servidor = gerenciador.iniciarServidor(
-            this.selectNome.getSelectedItem().toString(),
-            Integer.parseInt(this.txtPorta.getText())
-        );
-        servidor.iniciarBarramentos();
-        
-        btnIniciar.setEnabled(false);
-        btnIniciar.setText("Conectado");
-        selectNome.setEnabled(false);
-        txtPorta.setEnabled(false);
+        if(servidor instanceof Servidor)
+            desconectar();
+        else
+            conectar();
     }//GEN-LAST:event_btnIniciarActionPerformed
 
+    public void conectar() {
+        try {
+            txtSaidaCliente.setText("");
+            txtSaidaServidor.setText("");
+            
+            servidor = new Servidor(Integer.parseInt(this.txtPorta.getText()));
+            servidor.iniciarBarramentos();
+
+            btnIniciar.setText("Desconectar");
+            txtPorta.setEnabled(false);
+        } catch (Exception ex) {
+            Saida.escrever(ex.getMessage());
+        }
+    }
+    
+    public void desconectar(){
+        try {
+            servidor.desconectar();
+            
+            servidor = null; 
+        
+            txtSaidaCliente.setText("");
+            txtSaidaServidor.setText("");
+            btnIniciar.setText("Conectar");
+            txtPorta.setEnabled(true);
+            
+            Saida.escrever("Servidor desconectado");
+            
+        } catch (IOException ex) {
+            Saida.escrever("Erro ao desconectar: %s", ex.getMessage());
+        }
+        
+    }
+    
     private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
         try {
-            gerenciador.conectar(txtEnderecoProximo.getText());
+            servidor.conectarProximo(txtEnderecoProximo.getText());
             
             btnProximo.setEnabled(false);
             btnProximo.setText("Conectado");
             txtEnderecoProximo.setEnabled(false);
             
-        } catch (ServidorJaConectadoException ex) {
-            Saida.escrever(ex.getMessage());
-        } catch (ServidorNaoEncontradoException ex) {
+        } catch (IOException ex) {
             Saida.escrever(ex.getMessage());
         }
     }//GEN-LAST:event_btnProximoActionPerformed
 
-    private void selectNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectNomeActionPerformed
-        
-    }//GEN-LAST:event_selectNomeActionPerformed
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        txtSaidaServidor.setText("");
+        txtSaidaCliente.setText("");
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,12 +258,16 @@ public class Formulario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnProximo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> selectNome;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField txtEnderecoProximo;
     private javax.swing.JTextField txtPorta;
-    private javax.swing.JTextArea txtSaida;
+    private javax.swing.JTextArea txtSaidaCliente;
+    private javax.swing.JTextArea txtSaidaServidor;
     // End of variables declaration//GEN-END:variables
 }

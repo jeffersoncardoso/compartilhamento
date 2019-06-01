@@ -1,5 +1,7 @@
 package Conexao;
 
-public class QualTipoConexao {
+import java.io.Serializable;
+
+public class QualTipoConexao implements Serializable{
     
 }

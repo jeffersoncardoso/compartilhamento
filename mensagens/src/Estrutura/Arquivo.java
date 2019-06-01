@@ -27,4 +27,23 @@ public class Arquivo implements Serializable{
         return extensao;
     }
     
+    public Arquivo concatenar(Arquivo arquivo) {
+        byte[] primeiraParte = conteudo;
+        byte[] proximaParte = arquivo.getConteudo();
+        byte[] combinado = new byte[primeiraParte.length + proximaParte.length];
+
+        for (int i = 0; i < combinado.length; ++i)
+        {
+            combinado[i] = i < primeiraParte.length ? primeiraParte[i] : proximaParte[i - primeiraParte.length];
+        }
+        
+        return new Arquivo(nome, combinado);
+    }
+
+    public int getParte() {
+        int indexParte = this.nome.lastIndexOf("_");
+        
+        return Integer.parseInt(this.nome.substring(indexParte + 1));
+    }
+    
 }

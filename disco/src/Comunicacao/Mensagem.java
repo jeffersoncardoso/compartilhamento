@@ -1,13 +1,20 @@
 package Comunicacao;
 
-public class Mensagem {
-    private String mensagem;
+import Servidor.Servidor;
+import java.io.IOException;
+import java.io.Serializable;
 
-    public Mensagem(String mensagem) {
-        this.mensagem = mensagem;
+abstract public class Mensagem implements Serializable{
+    
+    protected String destino;
+    
+    abstract public void executar(Servidor servidor) throws IOException;
+    
+    public boolean ehParaMim(Servidor servidor) {
+        return servidor.getNome().equals(destino);
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public String getDestino() {
+        return destino;
     }
 }

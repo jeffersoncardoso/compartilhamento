@@ -31,11 +31,16 @@ public class Disco {
         listarArquivos();
     }
     
+    public void desconectar() {
+        conexao.encerrar();
+        Saida.escrever("Desconectado");
+    }
+    
     public void enviarArquivo(File arquivo) throws IOException {
         Arquivo arquivoEnviado = new Arquivo(arquivo.getName(), Files.readAllBytes(arquivo.toPath()));
         
         conexao.enviar(new EnviarArquivo(arquivoEnviado));
-        Resposta resposta = (ArquivoRecebido)conexao.receber();
+        Resposta resposta = (Resposta)conexao.receber();
         
         switch(resposta.getTipo()) {
             case ERRO_AO_SALVAR: 
