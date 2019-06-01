@@ -120,7 +120,7 @@ public final class Servidor {
     }
     
     public void dividirArquivo(Arquivo arquivo) throws IOException {
-        int numeroPartes = (proximo instanceof ServidorCadeia) ? this.caminho.getTotal() : 1;
+        int numeroPartes = (proximo instanceof ServidorCadeia && possuiCadeia()) ? this.caminho.getTotal() : 1;
         
         SaidaCliente.escrever("Salvar %s (%s bytes - %s parte(s))", arquivo.getNome(), arquivo.getConteudo().length, numeroPartes);
         

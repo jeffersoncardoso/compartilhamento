@@ -5,20 +5,20 @@ import Conexao.Usuario;
 import Estrutura.Arquivo;
 import GUI.Saida;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReceberArquivoDividido extends Mensagem{
     
     private final String origem;
     private final long solicitante;
     private final String nomeOriginal;
-    private ArrayList<Arquivo> arquivos = new ArrayList();
+    private HashMap<Integer, Arquivo> arquivos = new HashMap();
 
-    public ReceberArquivoDividido(Servidor origem, Usuario usuario, String nomeOriginal, Arquivo primeiraParte) {
+    public ReceberArquivoDividido(Servidor origem, Usuario usuario, String nomeOriginal, Arquivo parte) {
         this.origem = origem.getNome();
         this.solicitante = usuario.getId();
         this.nomeOriginal = nomeOriginal;
-        arquivos.add(0, primeiraParte);
+        arquivos.put(parte.getParte(), parte);
     }
     
     @Override
@@ -32,7 +32,7 @@ public class ReceberArquivoDividido extends Mensagem{
             }
             
             Saida.escrever("Buscando parte %s do arquivo %s", proximaParte.getParte() + 1, nomeOriginal);
-            arquivos.add(proximaParte.getParte(), proximaParte);
+            arquivos.put(proximaParte.getParte(), proximaParte);
             
             servidor.encaminhar(this);
         } else {
@@ -42,7 +42,9 @@ public class ReceberArquivoDividido extends Mensagem{
     
     private Arquivo unirPartes() {
         Arquivo primeiro = arquivos.get(0);
-        primeiro = primeiro.concatenar(arquivos.get(1));
+        for (int i = 1; i < arquivos.size(); i++) {
+            primeiro = primeiro.concatenar(arquivos.get(i));
+        }
         
         return new Arquivo(nomeOriginal, primeiro.getConteudo());
     }

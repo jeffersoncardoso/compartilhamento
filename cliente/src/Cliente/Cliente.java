@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 public class Cliente extends javax.swing.JFrame {
 
     private Disco disco;
+    private Timer timer = new Timer(); 
     /**
      * Creates new form Cliente
      */
@@ -41,6 +42,7 @@ public class Cliente extends javax.swing.JFrame {
         txtPorta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btnEnviarArquivo.setText("Enviar arquivo");
         btnEnviarArquivo.addActionListener(new java.awt.event.ActionListener() {
@@ -147,6 +149,9 @@ public class Cliente extends javax.swing.JFrame {
                 txtPorta.setEnabled(true);
                 disco = null;
                 
+                timer.cancel();
+                timer = null;
+                
             } else {
                 disco = new Disco("localhost", Integer.parseInt(this.txtPorta.getText()));
 
@@ -155,7 +160,7 @@ public class Cliente extends javax.swing.JFrame {
                 txtPorta.setEnabled(false);
                 txtSaida.setText("");
 
-                Timer timer = new Timer(); 
+                timer = new Timer();
                 timer.schedule( new TimerTask() 
                 { 
                     public void run() {
