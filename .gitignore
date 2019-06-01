@@ -1,7 +1,6 @@
 /disco/build/
 /disco/dist/
-/mensagens/mensagens/nbproject/private/
-/mensagens/mensagens/build/
-/mensagens/mensagens/dist/
+/mensagens/build/
+/mensagens/dist/
 /cliente/dist/
 /cliente/build/

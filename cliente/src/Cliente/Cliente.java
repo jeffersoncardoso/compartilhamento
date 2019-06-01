@@ -153,6 +153,7 @@ public class Cliente extends javax.swing.JFrame {
                 btnConectar.setText("Desconectar");
                 txtHost.setEnabled(false);
                 txtPorta.setEnabled(false);
+                txtSaida.setText("");
 
                 Timer timer = new Timer(); 
                 timer.schedule( new TimerTask() 
@@ -164,7 +165,7 @@ public class Cliente extends javax.swing.JFrame {
                             listaArquivos.setSelectedIndex(index);
                         }
                     } 
-                }, 0, 3000);
+                }, 0, 2000);
             }
         } catch (IOException ex) {
             Saida.escrever(ex.getMessage());
