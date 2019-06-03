@@ -12,7 +12,7 @@ public class EnviarArquivoDividido extends Mensagem{
     private final String origem;
     private final ArrayList<String> servidores = new ArrayList();
     private final ArrayList<byte[]> divisao = new ArrayList();
-    private String nome;
+    private final String nome;
     private int parteAtual = 0;
     
     

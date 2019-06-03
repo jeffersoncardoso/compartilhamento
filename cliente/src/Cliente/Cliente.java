@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class Cliente extends javax.swing.JFrame {
 
-    private Disco disco;
+    private Servidor disco;
     private Timer timer = new Timer(); 
     /**
      * Creates new form Cliente
@@ -141,7 +141,7 @@ public class Cliente extends javax.swing.JFrame {
     
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
         try {
-            if(disco instanceof Disco) {
+            if(disco instanceof Servidor) {
                 
                 disco.desconectar();
                 btnConectar.setText("Conectar");
@@ -153,7 +153,7 @@ public class Cliente extends javax.swing.JFrame {
                 timer = null;
                 
             } else {
-                disco = new Disco("localhost", Integer.parseInt(this.txtPorta.getText()));
+                disco = new Servidor("localhost", Integer.parseInt(this.txtPorta.getText()));
 
                 btnConectar.setText("Desconectar");
                 txtHost.setEnabled(false);
@@ -164,7 +164,7 @@ public class Cliente extends javax.swing.JFrame {
                 timer.schedule( new TimerTask() 
                 { 
                     public void run() {
-                        if(disco instanceof Disco) {
+                        if(disco instanceof Servidor) {
                             int index = listaArquivos.getSelectedIndex();
                             listaArquivos.setListData(disco.getArquivos());
                             listaArquivos.setSelectedIndex(index);

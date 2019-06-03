@@ -6,7 +6,7 @@ import Comunicacao.PercorrerCaminho;
 import Comunicacao.ReceberArquivoDividido;
 import Conexao.ConexaoServidor;
 import GUI.Saida;
-import Conexao.Usuario;
+import Conexao.Cliente;
 import Estrutura.Arquivo;
 import GUI.SaidaCliente;
 import Resposta.ArquivoSalvo;
@@ -22,7 +22,7 @@ import java.util.*;
 
 public final class Servidor {
     ServerSocket socketServidor;
-    public HashMap<Long, Usuario> usuarios = new HashMap();
+    public HashMap<Long, Cliente> usuarios = new HashMap();
     
     private ServidorCadeia anterior;
     private ServidorCadeia proximo;
@@ -93,7 +93,7 @@ public final class Servidor {
         
     }
     
-    public void adicionar(Usuario usuario) {
+    public void adicionar(Cliente usuario) {
         this.usuarios.put(usuario.getId(), usuario);
     }
 
@@ -128,7 +128,7 @@ public final class Servidor {
         arquivoPartes.executar(this);
     }
     
-    public void solicitarArquivo(Usuario solicitante, String nome) throws IOException {
+    public void solicitarArquivo(Cliente solicitante, String nome) throws IOException {
         Arquivo arquivo = buscarParteArquivo(nome);
         Saida.escrever("Buscando parte %s do arquivo %s", arquivo.getParte() + 1, nome);
         
@@ -154,7 +154,7 @@ public final class Servidor {
     public void devolverArquivoCompleto(long solicitante, Arquivo arquivo) {
         SaidaCliente.escrever("Devolvendo arquivo %s completo", arquivo.getNome());
         
-        Usuario usuario = usuarios.get(solicitante);
+        Cliente usuario = usuarios.get(solicitante);
         usuario.devolverArquivoSolicitado(new ArquivoSalvo(arquivo));
     }
 

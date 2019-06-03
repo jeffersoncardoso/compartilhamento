@@ -17,12 +17,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.SocketException;
 
-public class Usuario extends Thread{
+public class Cliente extends Thread{
     private boolean conectado = true;
     private final ConexaoCliente conexao;
     private final Servidor servidor;
 
-    public Usuario(ConexaoCliente conexao, Servidor servidor) {
+    public Cliente(ConexaoCliente conexao, Servidor servidor) {
         this.conexao = conexao;
         this.servidor = servidor;
     }

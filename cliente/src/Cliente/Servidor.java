@@ -5,7 +5,6 @@ import Requisicao.EnviarArquivo;
 import Requisicao.ListarArquivos;
 import Requisicao.SolicitarArquivo;
 import Resposta.Resposta;
-import Resposta.ArquivoRecebido;
 import Resposta.ArquivoSalvo;
 import Resposta.ListaArquivos;
 import Resposta.TipoResposta;
@@ -17,12 +16,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
 
-public class Disco {
-    private String nome;
-    private Conexao conexao;
+public class Servidor {
+    private final Conexao conexao;
     private String[] arquivos = {};
 
-    public Disco(String endereco, Integer porta) throws IOException {
+    public Servidor(String endereco, Integer porta) throws IOException {
         Socket socket = new Socket(endereco, porta);
         conexao = new Conexao(socket);
         

@@ -1,7 +1,7 @@
 package Comunicacao;
 
 import Servidor.Servidor;
-import Conexao.Usuario;
+import Conexao.Cliente;
 import Estrutura.Arquivo;
 import GUI.Saida;
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class ReceberArquivoDividido extends Mensagem{
     private final String nomeOriginal;
     private HashMap<Integer, Arquivo> arquivos = new HashMap();
 
-    public ReceberArquivoDividido(Servidor origem, Usuario usuario, String nomeOriginal, Arquivo parte) {
+    public ReceberArquivoDividido(Servidor origem, Cliente usuario, String nomeOriginal, Arquivo parte) {
         this.origem = origem.getNome();
         this.solicitante = usuario.getId();
         this.nomeOriginal = nomeOriginal;

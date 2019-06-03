@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Projetos/Feevale/compartilhamento/disco/src/Conexao/Cliente.java</file>
+            <file>file:/C:/Projetos/Feevale/compartilhamento/disco/src/Servidor/AguardarConexoes.java</file>
+            <file>file:/C:/Projetos/Feevale/compartilhamento/disco/src/GUI/Formulario.java</file>
+            <file>file:/C:/Projetos/Feevale/compartilhamento/disco/src/Servidor/EnviarMensagens.java</file>
+        </group>
     </open-files>
 </project-private>

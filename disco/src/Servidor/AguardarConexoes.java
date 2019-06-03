@@ -6,7 +6,7 @@ import Conexao.Conexao;
 import Conexao.ConexaoCliente;
 import Conexao.ConexaoServidor;
 import GUI.Saida;
-import Conexao.Usuario;
+import Conexao.Cliente;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -19,7 +19,7 @@ public class AguardarConexoes extends Thread{
     }
     
     private void conectar(ConexaoCliente conexao) {
-        Usuario usuario = new Usuario(conexao, this.servidor);
+        Cliente usuario = new Cliente(conexao, this.servidor);
         servidor.adicionar(usuario);
         
         usuario.start();
