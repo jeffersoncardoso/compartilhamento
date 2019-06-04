@@ -29,6 +29,11 @@ public class Cliente extends Thread{
     
     private void enviarArquivo(EnviarArquivo requisicao) {
         try {
+            if(servidor.buscarParteArquivo(requisicao.getArquivo().getNome()) != null) {
+                conexao.enviar(new ArquivoErroAoSalvar("Já existe um arquivo com esse nome"));
+                return;
+            }
+            
             servidor.dividirArquivo(requisicao.getArquivo());
         } catch (IOException ex) {
             StringWriter sw = new StringWriter();

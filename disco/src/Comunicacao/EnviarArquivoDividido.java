@@ -29,21 +29,15 @@ public class EnviarArquivoDividido extends Mensagem{
         int tamanhoParte = (int)Math.ceil((double)tamanho / partes);
         int inicio = 0;
         int fim = tamanhoParte;
-        int contadorPartes = 1;
-        boolean dividindo = true;
         
-        while(dividindo) {
+        for (int i = 1; i <= partes; i++) {
             divisao.add(Arrays.copyOfRange(conteudo, inicio, fim));
-        
+            
             inicio = fim;
             fim = inicio + tamanhoParte;
             
-            if(fim > tamanho || contadorPartes == partes) {
+            if(fim > tamanho)
                 fim = tamanho;
-                dividindo = false;
-            }
-            
-            contadorPartes++;
         }
     }
     

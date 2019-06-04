@@ -6,6 +6,7 @@ import Requisicao.ListarArquivos;
 import Requisicao.SolicitarArquivo;
 import Resposta.Resposta;
 import Resposta.ArquivoSalvo;
+import Resposta.ArquivoErroAoSalvar;
 import Resposta.ListaArquivos;
 import Resposta.TipoResposta;
 import Util.Saida;
@@ -42,7 +43,8 @@ public class Servidor {
         
         switch(resposta.getTipo()) {
             case ERRO_AO_SALVAR: 
-                Saida.escrever("Erro ao salvar o arquivo:");
+                ArquivoErroAoSalvar erro = (ArquivoErroAoSalvar)resposta;
+                Saida.escrever("Erro ao salvar o arquivo: %s", erro.getMensagem());
                 break;
             case ARQUIVO_RECEBIDO:
                 Saida.escrever("Arquivo salvo com sucesso");
