@@ -26,9 +26,10 @@ public class EnviarArquivoDividido extends Mensagem{
         byte[] conteudo = arquivo.getConteudo();
         int tamanho = conteudo.length;
         
-        int tamanhoParte = (int)Math.ceil(tamanho / partes);
+        int tamanhoParte = (int)Math.ceil((double)tamanho / partes);
         int inicio = 0;
         int fim = tamanhoParte;
+        int contadorPartes = 1;
         boolean dividindo = true;
         
         while(dividindo) {
@@ -37,10 +38,12 @@ public class EnviarArquivoDividido extends Mensagem{
             inicio = fim;
             fim = inicio + tamanhoParte;
             
-            if(fim > tamanho) {
+            if(fim > tamanho || contadorPartes == partes) {
                 fim = tamanho;
                 dividindo = false;
             }
+            
+            contadorPartes++;
         }
     }
     
